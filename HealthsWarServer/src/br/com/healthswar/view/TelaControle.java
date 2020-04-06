@@ -24,7 +24,7 @@ public class TelaControle extends JFrame {
 	private Button	btnStart;
 	private Label 	lblTitle;
 	
-	private JTextArea log;
+	private static JTextArea log;
 	
 	private Server server;
 	
@@ -105,6 +105,7 @@ public class TelaControle extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
+					// Se estiver desligado ele liga
 					if(server == null) {
 						server = Server.ligar(40000);
 						log.setText(log.getText() + "\nServidor aguardando na porta 40000");
@@ -124,6 +125,9 @@ public class TelaControle extends JFrame {
 		};
 	}
 	
+	/**
+	 * Enquanto o servidor estiver ligado fica aguardando novos players
+	 * */
 	private Thread aguardarPlayers() {
 		return new Thread(new Runnable() {
 			
@@ -132,9 +136,7 @@ public class TelaControle extends JFrame {
 				// TODO Auto-generated method stub
 				while(Server.ligado) {
 					try {
-						System.out.println("Aguardando conexao");
 						server.awaitConnetion();
-						System.out.println("Player conectado");
 					} catch (ClassNotFoundException | IOException e) {
 						e.printStackTrace();
 					}
@@ -142,5 +144,10 @@ public class TelaControle extends JFrame {
 			}
 		});
 	}
-	 
+	
+	public static void atualizarLog(String msg) {
+		log.setText(log.getText() + "\n" + msg);
+		System.out.println(msg);
+	}
+	
 }

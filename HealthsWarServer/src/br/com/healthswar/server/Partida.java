@@ -1,6 +1,7 @@
 package br.com.healthswar.server;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import br.com.healthswar.comunication.Request;
 import br.com.healthswar.comunication.Response;
@@ -12,7 +13,6 @@ public class Partida extends Thread {
 	private Player[] players; 
 	private int playersConneted;
 	private boolean completo;
-	
 	
 	public Partida(Request MATCH_TYPE) {
 		this.MATCH_TYPE = MATCH_TYPE;
@@ -33,6 +33,9 @@ public class Partida extends Thread {
 		}
 	}
 	
+	/**
+	 * Adiona players enquanto tiver espaco na partida
+	 * */
 	public void addPlayer(Player player) {
 		if(!completo) {
 			this.players[playersConneted] = player;
@@ -47,6 +50,10 @@ public class Partida extends Thread {
 		return this.completo;
 	}
 
+	
+	/**
+	 * Aqui vai rolar a partida
+	 * */
 	@Override
 	public void run() {
 		for(Player player: players) {
@@ -65,6 +72,12 @@ public class Partida extends Thread {
 //				e.printStackTrace();
 //			}
 //		}
+	}
+
+	@Override
+	public String toString() {
+		return "Partida [MATCH_TYPE=" + MATCH_TYPE + ", players=" + Arrays.toString(players) + ", playersConneted="
+				+ playersConneted + ", completo=" + completo + "]";
 	}
 	
 }

@@ -16,5 +16,10 @@ public class Player {
 		out = new ObjectOutputStream(socket.getOutputStream());
 		in 	= new ObjectInputStream(socket.getInputStream());
 	}
+
+	@Override
+	public String toString() {
+		return "Player [socket=" + socket + ", out=" + out + ", in=" + in + "]";
+	}
 	
 }

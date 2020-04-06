@@ -46,6 +46,10 @@ public class AwaitView extends JFrame {
 		aguardarPartida().start();
 	}
 
+	
+	/**
+	 * Aguarda a resposta da partida
+	 */
 	private Thread aguardarPartida() {
 		return new Thread(new Runnable() {
 			public void run() {
@@ -63,6 +67,9 @@ public class AwaitView extends JFrame {
 		});
 	}
 	
+	/**
+	 * Animação besta so pra dizer q ta aguardando...
+	 * */
 	private Thread animacao() {
 		return new Thread(new Runnable() {
 			

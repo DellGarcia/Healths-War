@@ -76,6 +76,9 @@ public class InitView extends JFrame {
 		setVisible(true);
 	}
 	
+	/**
+	 * Vê qual partida o player escolheu
+	 * */
 	private ActionListener matchAction(int option) {
 		return new ActionListener() {
 			

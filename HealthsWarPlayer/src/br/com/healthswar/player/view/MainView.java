@@ -28,7 +28,7 @@ public class MainView extends JFrame {
 		container = new Panel(new Color(54,54,54));
 		setContentPane(container);
 		
-		container.add(new Label(500, 50, "Agora vai dar bom", new Font("verdana", Font.PLAIN, 18), Color.BLACK));
+		container.add(new Label(500, 50, "Aqui vai rolar a partida", new Font("verdana", Font.PLAIN, 18), Color.BLACK));
 		
 		setVisible(true);
 	}

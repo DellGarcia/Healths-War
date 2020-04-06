@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 
 import br.com.healthswar.comunication.Request;
 import br.com.healthswar.comunication.Response;
+import br.com.healthswar.view.TelaControle;
 
 public class Server extends ServerSocket {
 	
@@ -37,35 +38,47 @@ public class Server extends ServerSocket {
 		server = null;
 	}
 	
+	/**
+	 * Fica aguardando o player se conectar
+	 * e vê o que ele quer fazer
+	 * */
 	public void awaitConnetion() throws IOException, ClassNotFoundException {
+		TelaControle.atualizarLog("Aguardando conexao");
+		
 		Player player = new Player(accept());
 		
 		Request request = (Request) player.in.readObject();
+		player.out.writeObject(Response.MATCH_FOUND);
 		
 		switch(request) {
 			case PLAY_A_SOLO_MATCH:
 				solo.addPlayer(player);
+				verificarPartida(solo, Request.PLAY_A_SOLO_MATCH);
 				break;
 				
 			case PLAY_A_DUO_MATCH:
 				duo.addPlayer(player);
+				verificarPartida(duo, Request.PLAY_A_DUO_MATCH);
 				break;
 				
 			case PLAY_A_SQUAD_MATCH:
 				squad.addPlayer(player);
+				verificarPartida(squad, Request.PLAY_A_SQUAD_MATCH);
 				break;
 		}
 		
-		player.out.writeObject(Response.MATCH_FOUND);
-		
-		verificarPartida(solo, Request.PLAY_A_SOLO_MATCH);
-		verificarPartida(duo, Request.PLAY_A_DUO_MATCH);
-		verificarPartida(squad, Request.PLAY_A_SQUAD_MATCH);
+		TelaControle.atualizarLog("Player " + player.toString() + " conectado");
 	}
 	
+	/**
+	 * Verifica se a partida está completa
+	 * Se estiver inicia a partida em questao
+	 * e comeca a preencher outra partida
+	 * */
 	private void verificarPartida(Partida match, Request request) {
 		if(match.getCompleto()) {
 			match.start();
+			TelaControle.atualizarLog("Partida " + match.toString() + " completa e inicida");
 			match = new Partida(request);
 		}
 	}
