@@ -15,17 +15,9 @@ public enum Request implements Serializable {
 	PLAY_A_DUO_MATCH(1),
 	PLAY_A_SQUAD_MATCH(2);
 	
-	private int requestCode;
+	public int requestCode;
 	
 	Request(int requestCode) {
-		this.requestCode = requestCode;
-	}
-	
-	public int getRequestCode() {
-		return requestCode;
-	}
-
-	public void setRequestCode(int requestCode) {
 		this.requestCode = requestCode;
 	}
 	

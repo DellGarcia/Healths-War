@@ -34,6 +34,7 @@ public class AwaitView extends JFrame {
 		setLayout(null);
 		
 		container = new Panel();
+		container.setBackground(new Color(65,105,225));
 		setContentPane(container);
 		
 		lblMsg = new Label(350, 50, "Aguardando os outros jogadores...", new Font("Verdana", Font.PLAIN, 20), Color.BLACK);

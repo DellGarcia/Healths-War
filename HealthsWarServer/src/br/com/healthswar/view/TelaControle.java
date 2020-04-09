@@ -9,8 +9,10 @@ import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 
 import br.com.dellgarcia.frontend.Button;
 import br.com.dellgarcia.frontend.Label;
@@ -20,20 +22,20 @@ import br.com.healthswar.server.Server;
 public class TelaControle extends JFrame {
 
 	private JPanel 	container;
-	private Button 	btnClose;
 	private Button	btnStart;
-	private Label 	lblTitle;
+	
+	private Label lblPorta;
+	private CampoPorta txtPorta;
 	
 	private static JTextArea log;
 	
 	private Server server;
 	
 	public TelaControle() {
-		setTitle("Tela de Controle");
+		setTitle("Health's War Server");
 		setSize(1080, 720);
 		setLayout(null);
 		setLocationRelativeTo(null);
-		setUndecorated(true);
 		setResizable(false);
 		
 		container = new JPanel();
@@ -46,25 +48,10 @@ public class TelaControle extends JFrame {
 			container.setLayout(null);
 			container.setSize(this.getSize());
 			setContentPane(container);
-		
-		// Botao sair	
-			btnClose = new Button(
-					container.getWidth()-50, 0,
-					50, 30,
-					container.getBackground(), Color.LIGHT_GRAY,
-					Fonts.NORMAL, "X",
-					Color.BLACK, 0,
-					Color.RED, Color.WHITE);
-			container.add(btnClose);
-			btnClose.addActionListener(closeAction());
-		
-		// Titulo da pagina	
-			lblTitle = new Label(200, 30, "Health's War Server", Fonts.DESTAQUE, Color.WHITE, container.getBackground());
-			container.add(lblTitle);
-		
+
 		// Botao iniciar
 			btnStart = new Button(
-					container.getWidth()/2 - 50, container.getHeight()/2 - 50,
+					container.getWidth()/2 - 50, (int)(container.getHeight() / (1.5)),
 					100, 40,
 					Color.WHITE, Color.BLACK,
 					Fonts.DESTAQUE, "Start",
@@ -73,12 +60,22 @@ public class TelaControle extends JFrame {
 					);
 			container.add(btnStart);
 			btnStart.addActionListener(swicthAction());
-		
+			
+		// Label Porta
+			lblPorta = new Label(500, 40, "Informe uma porta para ligar o servidor (2000 a 9999)", Fonts.TITLE, Color.WHITE, null, SwingConstants.CENTER, SwingConstants.CENTER);
+			lblPorta.setLocation(container.getWidth()/2 - lblPorta.getWidth()/2, container.getHeight()/2 - lblPorta.getHeight()/2);
+			container.add(lblPorta);
+			
+		// Campo Porta
+			txtPorta = new CampoPorta(150, 40, "", Fonts.DESTAQUE, Color.WHITE, Color.BLACK);
+			txtPorta.setLocation(container.getWidth()/2 - txtPorta.getWidth()/2, container.getHeight()/2 - txtPorta.getHeight()/2 + 60);
+			container.add(txtPorta);
+			
 		// Log do servidor
 			log = new JTextArea();
 			log.setBackground(Color.LIGHT_GRAY);
 			log.setSize(new Dimension(700, 300));
-			log.setLocation(new Point(container.getWidth()/2 - log.getWidth()/2, 400));
+			log.setLocation(new Point(container.getWidth()/2 - log.getWidth()/2, 20));
 			log.setText("Inicie o servidor e veja o status aqui no Log!");
 			log.setFont(Fonts.DESTAQUE);
 			log.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -89,16 +86,6 @@ public class TelaControle extends JFrame {
 		setVisible(true);
 	}
 	
-	private ActionListener closeAction() {
-		return new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
-		};
-	}
-	
 	private ActionListener swicthAction() {
 		return new ActionListener() {
 			
@@ -107,10 +94,22 @@ public class TelaControle extends JFrame {
 				try {
 					// Se estiver desligado ele liga
 					if(server == null) {
-						server = Server.ligar(40000);
-						log.setText(log.getText() + "\nServidor aguardando na porta 40000");
-						aguardarPlayers().start();
-						btnStart.setText("Stop");
+						if(txtPorta.isFilled()) {
+							int val = txtPorta.getValue();
+							if(val >= 2000) {
+								server = Server.ligar(val);
+								log.setText(log.getText() + "\nServidor aguardando na porta " + val);
+								aguardarPlayers().start();
+								btnStart.setText("Stop");
+							} else {
+								JOptionPane.showMessageDialog(null, "O valor da porta deve ser maior 2000 e menor que 10000!");
+								txtPorta.setText("");
+							}
+						} else {
+							JOptionPane.showMessageDialog(null, "Prencha o campo da porta corretamente!");
+							txtPorta.setText("");
+						}
+						
 					} else {
 						Server.desligar();
 						server = null;

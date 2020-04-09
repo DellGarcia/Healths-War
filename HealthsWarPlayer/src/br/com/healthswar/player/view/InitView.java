@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import br.com.dellgarcia.frontend.Button;
 import br.com.dellgarcia.frontend.Panel;
@@ -28,7 +29,6 @@ public class InitView extends JFrame {
 	private Button squadMatch;
 	
 	public InitView() {
-		
 		tk = Toolkit.getDefaultToolkit();
 		
 		setTitle("Health's War");
@@ -37,7 +37,7 @@ public class InitView extends JFrame {
 		setLocationRelativeTo(null);
 		setUndecorated(true);
 		
-		container = new Panel(Color.WHITE);
+		container = new Panel(new Color(65,105,225));
 		setContentPane(container);
 		
 		Font font = new Font("Verdana", Font.PLAIN, 22);
@@ -49,7 +49,7 @@ public class InitView extends JFrame {
 				font, "Solo Match",
 				Color.BLACK, 1,
 				new Color(65,105,225), Color.WHITE);
-		soloMatch.addActionListener(matchAction(1));
+		soloMatch.addActionListener(matchAction(Request.PLAY_A_SOLO_MATCH));
 		
 		duoMatch = new Button(
 				getWidth()/2 - 100, getHeight()/2 - 25,
@@ -58,7 +58,7 @@ public class InitView extends JFrame {
 				font, "Duo Match",
 				Color.BLACK, 1,
 				new Color(65,105,225), Color.WHITE);
-		duoMatch.addActionListener(matchAction(2));
+		duoMatch.addActionListener(matchAction(Request.PLAY_A_DUO_MATCH));
 		
 		squadMatch = new Button(
 				getWidth()/2 - 100, getHeight()/2 - 25 + 65,
@@ -67,7 +67,7 @@ public class InitView extends JFrame {
 				font, "Squad Match",
 				Color.BLACK, 1,
 				new Color(65,105,225), Color.WHITE);
-		squadMatch.addActionListener(matchAction(3));
+		squadMatch.addActionListener(matchAction(Request.PLAY_A_SQUAD_MATCH));
 				
 		container.add(soloMatch);
 		container.add(duoMatch);
@@ -79,28 +79,16 @@ public class InitView extends JFrame {
 	/**
 	 * Vê qual partida o player escolheu
 	 * */
-	private ActionListener matchAction(int option) {
+	private ActionListener matchAction(Request request) {
 		return new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
 				try {
-					Player player = new Player(new Socket("localhost", 40000));
+					Player player = new Player(new Socket("localhost", Integer.parseInt(JOptionPane.showInputDialog("Informe a porta"))));
 					
-					switch (option) {
-						case 1:
-							player.out.writeObject(Request.PLAY_A_SOLO_MATCH);
-							break;
-		
-						case 2:
-							player.out.writeObject(Request.PLAY_A_DUO_MATCH);
-							break;
-							
-						case 3:
-							player.out.writeObject(Request.PLAY_A_SQUAD_MATCH);
-							break;
-					}
+					player.out.writeObject(request);
 					
 					Response response = (Response) player.in.readObject();
 					if(response == Response.MATCH_FOUND) {
@@ -109,8 +97,8 @@ public class InitView extends JFrame {
 					}
 					
 				} catch (IOException | ClassNotFoundException e2) {
-					System.out.println("Problemas ao tentar conectar ao servidor");
-					e2.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Problemas ao tentar conectar ao servidor");
+					//e2.printStackTrace();
 				}
 				
 			}
