@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 
 import br.com.healthswar.comunication.Request;
 import br.com.healthswar.comunication.Response;
+import br.com.healthswar.gameplay.Player;
 import br.com.healthswar.view.TelaControle;
 
 public class Server extends ServerSocket {
