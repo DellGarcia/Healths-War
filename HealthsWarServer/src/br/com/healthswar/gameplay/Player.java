@@ -13,6 +13,8 @@ public class Player {
 	public ObjectInputStream in;
 	
 	// Configuracao da partida
+	private int healthsPoint;
+	
 	private Deck deck;
 	
 	public Player(Socket socket) throws IOException {
@@ -27,6 +29,14 @@ public class Player {
 
 	public void setDeck(Deck deck) {
 		this.deck = deck;
+	}
+
+	public int getHealthsPoint() {
+		return healthsPoint;
+	}
+
+	public void setHealthsPoint(int healthsPoint) {
+		this.healthsPoint = healthsPoint;
 	}
 
 	@Override

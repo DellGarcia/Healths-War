@@ -11,6 +11,8 @@ public class Game {
 	
 	public Game(Player[] players) {
 		this.players = players;
+		this.turno = 1;
+		this.ativo = true;
 		sortDeck();
 	}
 	
@@ -33,7 +35,7 @@ public class Game {
 			
 		}
 		
-		public void atacar(Combatente alvo) {
+		public void atacar(Combatente escolhido, Combatente alvo) {
 			
 		}
 		

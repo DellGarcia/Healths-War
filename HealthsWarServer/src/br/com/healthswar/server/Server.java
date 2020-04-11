@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 
 import br.com.healthswar.comunication.Request;
 import br.com.healthswar.comunication.Response;
+import br.com.healthswar.contoller.ConnectionFactory;
 import br.com.healthswar.gameplay.Player;
 import br.com.healthswar.view.TelaControle;
 
@@ -23,6 +24,7 @@ public class Server extends ServerSocket {
 		solo = new Partida(Request.PLAY_A_SOLO_MATCH);
 		duo = new Partida(Request.PLAY_A_DUO_MATCH);
 		squad = new Partida(Request.PLAY_A_SQUAD_MATCH);
+		ConnectionFactory.openConnection();
 	}
 
 	public static Server ligar(int port) throws IOException {

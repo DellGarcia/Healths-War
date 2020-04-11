@@ -55,10 +55,7 @@ public class Partida extends Thread {
 	public boolean getCompleto() {
 		return this.completo;
 	}
-
-	/**
-	 * Aqui vai rolar a partida
-	 */
+	
 	@Override
 	public void run() {
 		game = new Game(players);
@@ -93,7 +90,7 @@ public class Partida extends Thread {
 						break;
 						
 					case ATACK_THE_OPONENT:
-						game.atacar(new Combatente());
+						game.atacar(new Combatente(), new Combatente());
 						break;
 					
 					case END_THE_TURN:
@@ -112,7 +109,7 @@ public class Partida extends Thread {
 	@Override
 	public String toString() {
 		return "Partida [MATCH_TYPE=" + MATCH_TYPE + ", players=" + Arrays.toString(players) + ", playersConneted="
-				+ playersConneted + ", completo=" + completo + "]";
+				+ playersConneted + ", completo=" + completo + ", game=" + game + "]";
 	}
 
 }
