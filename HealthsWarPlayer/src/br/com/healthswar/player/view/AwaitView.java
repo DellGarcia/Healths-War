@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import br.com.dellgarcia.frontend.Label;
 import br.com.dellgarcia.frontend.Panel;
 import br.com.healthswar.comunication.Response;
-import br.com.healthswar.player.model.Player;
+import br.com.healthswar.gameplay.Player;
 
 @SuppressWarnings("serial")
 public class AwaitView extends JFrame {
@@ -57,7 +57,7 @@ public class AwaitView extends JFrame {
 				try {
 					Response response = (Response) player.in.readObject();
 					if(response == Response.MATCH_READY) {
-						new MainView();
+						MainView.getInstance(player);
 						dispose();
 					}
 					

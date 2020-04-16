@@ -15,7 +15,8 @@ import br.com.dellgarcia.frontend.Button;
 import br.com.dellgarcia.frontend.Panel;
 import br.com.healthswar.comunication.Request;
 import br.com.healthswar.comunication.Response;
-import br.com.healthswar.player.model.Player;
+import br.com.healthswar.gameplay.Player;
+import br.com.healthswar.server.Main;
 
 @SuppressWarnings("serial")
 public class InitView extends JFrame {
@@ -26,7 +27,8 @@ public class InitView extends JFrame {
 	
 	private Button soloMatch;
 	private Button duoMatch;
-	private Button squadMatch;
+//	private Button squadMatch;
+	private Button localServer;
 	
 	public InitView() {
 		tk = Toolkit.getDefaultToolkit();
@@ -60,21 +62,41 @@ public class InitView extends JFrame {
 				new Color(65,105,225), Color.WHITE);
 		duoMatch.addActionListener(matchAction(Request.PLAY_A_DUO_MATCH));
 		
-		squadMatch = new Button(
+//		squadMatch = new Button(
+//				getWidth()/2 - 100, getHeight()/2 - 25 + 65,
+//				200, 50,
+//				Color.DARK_GRAY, Color.WHITE,
+//				font, "Squad Match",
+//				Color.BLACK, 1,
+//				new Color(65,105,225), Color.WHITE);
+//		squadMatch.addActionListener(matchAction(Request.PLAY_A_SQUAD_MATCH));
+		
+		localServer = new Button(
 				getWidth()/2 - 100, getHeight()/2 - 25 + 65,
 				200, 50,
 				Color.DARK_GRAY, Color.WHITE,
-				font, "Squad Match",
+				font, "Local Server",
 				Color.BLACK, 1,
 				new Color(65,105,225), Color.WHITE);
-		squadMatch.addActionListener(matchAction(Request.PLAY_A_SQUAD_MATCH));
+		localServer.addActionListener(openHostPage());
 				
 		container.add(soloMatch);
 		container.add(duoMatch);
-		container.add(squadMatch);
+		container.add(localServer);
 		
 		setVisible(true);
 	}
+	
+	private ActionListener openHostPage() {
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Main.init().start();
+			}
+		};
+	}
+	
 	
 	/**
 	 * Vê qual partida o player escolheu
@@ -86,7 +108,7 @@ public class InitView extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				try {
-					Player player = new Player(new Socket("localhost", Integer.parseInt(JOptionPane.showInputDialog("Informe a porta"))));
+					Player player = new Player(new Socket(JOptionPane.showInputDialog("Qual o ip do servidor?", "localhost"), 2222));
 					
 					player.out.writeObject(request);
 					

@@ -10,7 +10,9 @@ public enum MatchResponse implements Serializable {
 	NO_FIGHTER(3),
 	ITEM_USED(4),
 	IMPOSSIBLE_TO_USE(5),
-	SUCCESSFUL_ATACK(6);
+	SUCCESSFUL_ATACK(6),
+	YOUR_TURN(7),
+	OPPONENT_TURN(8);
 	
 	public int responseCode;
 
